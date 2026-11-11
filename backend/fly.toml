@@ -1,0 +1,32 @@
+# Backend (FastAPI). Change `app` if the name is already taken on Fly.io (names are global).
+app = "figsa-api"
+primary_region = "iad"   # Ashburn, Virginia: closest to Neon's "AWS US East (N. Virginia)"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[deploy]
+  # Runs before every release on a temporary machine. If it fails, the release is NOT deployed.
+  release_command = "alembic upgrade head"
+
+[env]
+  TZ = "America/Guatemala"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 1   # keep one machine warm so `fly ssh console` always works and requests are fast
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "20s"
+    interval = "30s"
+    method = "GET"
+    path = "/healthz"
+    timeout = "5s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

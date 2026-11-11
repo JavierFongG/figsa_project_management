@@ -1,0 +1,20 @@
+# Frontend (static React build served by nginx). Change `app` if the name is taken.
+app = "figsa-web"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile"
+  [build.args]
+    # MUST point at your API app, ending in /api/v1
+    VITE_API_URL = "https://figsa-api.fly.dev/api/v1"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

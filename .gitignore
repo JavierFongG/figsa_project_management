@@ -1,0 +1,15 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+# node
+node_modules/
+dist/
+# os / editor
+.DS_Store
+.idea/
+.vscode/
